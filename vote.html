@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+</head>
+<body>
+    <h1>Vote for Your Candidate</h1>
+    <form id="voteForm">
+        <label>
+            <input type="radio" name="candidate" value="Candidate 1">
+            Candidate 1
+        </label><br>
+        <label>
+            <input type="radio" name="candidate" value="Candidate 2">
+            Candidate 2
+        </label><br>
+        <label>
+            <input type="radio" name="candidate" value="Candidate 3">
+            Candidate 3
+        </label><br>
+        <button type="button" id="submitVote">Submit Vote</button>
+    </form>
+
+    <script>
+        const API_URL = "http://localhost:3000";
+
+        document.getElementById("submitVote").addEventListener("click", async () => {
+            const selected = document.querySelector('input[name="candidate"]:checked');
+            if (!selected) {
+                alert("Please select a candidate!");
+                return;
+            }
+
+            const candidate = selected.value;
+
+            try {
+                await fetch(`${API_URL}/vote`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ candidate }),
+                });
+                alert("Vote submitted successfully!");
+            } catch (error) {
+                console.error("Error submitting vote:", error);
+            }
+        });
+    </script>
+</body>
+</html>
